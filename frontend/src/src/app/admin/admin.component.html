@@ -1,0 +1,181 @@
+<head>
+    <title>Administrator</title>
+  </head>
+  
+  <body style="background-color: palegoldenrod;">
+      <div id="container">
+          <div id="menu" style="background-color:#FFD700;height:500px;width:20%;float:left;">
+            
+          </div>
+  
+          <div id="content" style="background-color:#EEEEEE;height:500px;width:60%;float:left;overflow-x: auto;">
+            <table>
+                <th>Zahtevi za registraciju:</th>
+                <tr>
+                    <th>Ime/Pun naziv preduzeća</th>
+                    <th>Prezime</th>
+                    <th>Korisnicko ime/Skraćeni naziv preduzeća</th>
+                    <th>Lozinka</th>
+                    <th>Datum rodjenja/Datum osnivanja</th>
+                    <th>Mesto rodjenja/Mesto preduzeća</th>
+                    <th>Telefon</th>
+                    <th>E-mail adresa</th>
+                </tr>
+                <tr *ngFor="let zah of mojizahtevi">
+                    <td>{{zah.ime }}</td>
+                    <td>{{zah.prezime}}</td>
+                    <td>{{zah.username}}</td>
+                    <td>{{zah.password}}</td>
+                    <td>{{zah.rodjendan}}</td>
+                    <td>{{zah.mesto}}</td>
+                    <td>{{zah.telefon}}</td>
+                    <td>{{zah.mail}}</td>
+                    <td>
+                        <input type="button" value="ODOBRI" (click)="dodajKorisnika(zah.username)">
+                    </td>
+                    <td>
+                        <input type="button" value="ODBIJ" (click)="obrisiKorisnika(zah.username)">
+                    </td>
+                </tr>
+            </table>
+        
+            <br><br><br>
+        
+            <table>
+                <th>Lista postojećih korisnika:</th>
+                <tr>
+                    <th>Ime/Pun naziv preduzeća</th>
+                    <th>Prezime</th>
+                    <th>Korisnicko ime/Skraćeni naziv preduzeća</th>
+                    <th>Lozinka</th>
+                    <th>Datum rodjenja/Datum osnivanja</th>
+                    <th>Mesto rodjenja/Mesto preduzeća</th>
+                    <th>Telefon</th>
+                    <th>E-mail adresa</th>
+                </tr>
+                <tr *ngFor='let kor of mojikorisnici'>
+                    <td>
+                        <input type="text" name="ime" value="kor.ime" [(ngModel)]="kor.ime">
+                    </td>
+                    <td>
+                        <input type="text" name="prezime" value="kor.prezime" [(ngModel)]="kor.prezime">
+                    </td>
+                    <td>
+                        <input type="text" name="korime" value="kor.username" [(ngModel)]="kor.username" disabled>
+                    </td>
+                    <td>
+                        <input type="text" name="lozinka" value="kor.password" [(ngModel)]="kor.password">
+                        {{ messagePassword }}
+                    </td>
+                    <td>
+                        <input type="date" name="rodjendan" value="kor.rodjendan" [(ngModel)]="kor.rodjendan">
+                    </td>
+                    <td>
+                        <input type="text" name="mesto" value="kor.mesto" [(ngModel)]="kor.mesto">
+                    </td>
+                    <td>
+                        <input type="tel" name="telefon" value="kor.telefon" [(ngModel)]="kor.telefon">
+                    </td>
+                    <td>
+                        <input type="email" name="mail" value="kor.mail" [(ngModel)]="kor.mail">
+                    </td>
+                    <td>
+                        <input type="button" value="OBRIŠI" (click)="obrisiKorisnika(kor.username)">
+                    </td>
+                    <td>
+                        <input type="button" value="AŽURIRAJ" (click)="azurirajKorisnika(kor)">
+                    </td>
+                </tr>
+            </table>
+        
+            <br><br><br>
+        
+            <div>
+                <p>Registracija korisnika:</p>
+                <br>
+                <form #formaAdmin='ngForm' (ngSubmit)='registrujKorisnika()'>
+                    <table>
+                        <tr>
+                            <td>Ime/Pun naziv preduzeća:</td>
+                            <td>
+                                <input type='text' name='ime' [(ngModel)]='ime'>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Prezime:</td>
+                            <td>
+                                <input type='text' name='prezime' [(ngModel)]='prezime'>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Korisničko ime/Skraćeni naziv preduzeća:</td>
+                            <td>
+                                <input type='text' name='username' [(ngModel)]='username'>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Lozinka:</td>
+                            <td>
+                                <input type='password' #lozinka1='ngModel' name='lozinka' [(ngModel)]='password'
+                                    pattern="^[a-zA-Z](?=.*[A-Z])(?=.*\d)(?=.*[$&+,:;=?@#|'>.-^*()%!])[a-zA-Z\d$&+,:;=?@#|'>.-^*()%!]{7,}$">
+                            </td>
+                            <td *ngIf='formaAdmin.submitted && lozinka1.errors.pattern'>
+                                Lozinka mora sadržati bar jedno veliko slovo,
+                                jedan broj i jedan specijalan znak. Lozinka mora početi slovom.
+                            </td>
+                        </tr> 
+                        <tr>
+                            <td>Potvrda lozinke:</td>
+                            <td>
+                                <input type='password' name='potvrda' [(ngModel)]='potvrda'>
+                                {{porukaPotvrda}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Datum rođenja/Datum osnivanja:</td>
+                            <td>
+                                <input type="date" name="rodjendan" value="2015-05-15" [(ngModel)]='rodjendan'>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mesto rođenja/Mesto preduzeća:</td>
+                            <td>
+                                <input type='text' name='mesto' [(ngModel)]='mesto'>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Telefon:</td>
+                            <td>
+                                <input type='tel' name='telefon' [(ngModel)]='telefon'>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>E-mail adresa:</td>
+                            <td>
+                                <input type="email" name="mail" [(ngModel)]='mail'>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <button type="submit">Registruj korisnika</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+          </div>
+          <div id="menu" style="background-color:#FFD700;height:500px;width:20%;float:left;overflow-y:auto;">
+            <a routerLink='../login'>Logout</a>
+            <br>
+            <a href="/promenaLozinke">Promena lozinke</a>
+          </div>
+  
+          <div id="footer" style="background-color:#FFA500;clear:both;text-align:center;">
+            
+          </div>
+      </div>
+  </body>
+  <footer style="background-color:#FFA500;clear:both;text-align:center;">
+    Poljoprivredni rasadnik
+  
+  </footer>
